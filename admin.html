@@ -390,28 +390,24 @@
 
 <!-- ===== LOGIN ===== -->
 <div class="login-screen" id="loginScreen">
-  <div class="login-card">
-   <div class="login-brand">
-  <img src="logo.png" alt="EsSalud Citas" style="width:130px; height:auto; display:block; margin-bottom:6px;">
-  <span class="badge-admin">Panel Administrativo</span>
-</div>
-      <h1>EsSalud Citas</h1>
-      <span class="badge-admin">Panel Administrativo</span>
-    </div>
-    <p class="sub">Hospital Nacional Edgardo Rebagliati Martins</p>
-    <div class="login-error" id="loginError">Usuario o contraseña incorrectos. Verifica tus datos e intenta de nuevo.</div>
-    <div class="field">
-      <label for="userInput">Usuario</label>
-      <input type="text" id="userInput" placeholder="admin" autocomplete="off">
-    </div>
-    <div class="field">
-      <label for="passInput">Contraseña</label>
-      <input type="password" id="passInput" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <button class="btn-primary" onclick="doLogin()">Ingresar al panel</button>
-    <p class="login-hint">Demo: usuario <b>admin</b> · contraseña <b>admin123</b></p>
-    <div class="login-footer">Acceso exclusivo para personal administrativo autorizado.<br>El uso indebido de esta plataforma será sancionado.</div>
+ <div class="login-card">
+  <div class="login-brand">
+    <img src="logo.png" alt="EsSalud Citas" style="width:130px; height:auto; display:block; margin-bottom:6px;">
+    <span class="badge-admin">Panel Administrativo</span>
   </div>
+  <p class="sub">Hospital Nacional Edgardo Rebagliati Martins</p>
+  <div class="login-error" id="loginError">Usuario o contraseña incorrectos. Verifica tus datos e intenta de nuevo.</div>
+  <div class="field">
+    <label for="userInput">Usuario</label>
+    <input type="text" id="userInput" placeholder="admin" autocomplete="off">
+  </div>
+  <div class="field">
+    <label for="passInput">Contraseña</label>
+    <input type="password" id="passInput" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
+  </div>
+  <button class="btn-primary" onclick="doLogin()">Ingresar al panel</button>
+  <p class="login-hint">Demo: usuario <b>admin</b> · contraseña <b>admin123</b></p>
+  <div class="login-footer">Acceso exclusivo para personal administrativo autorizado.<br>El uso indebido de esta plataforma será sancionado.</div>
 </div>
 
 <!-- ===== APP ===== -->
