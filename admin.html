@@ -59,13 +59,9 @@
     box-shadow:0 30px 70px rgba(0,0,0,0.35);
   }
   .login-brand{ display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:22px; }
-  .login-brand .mark{
-    width:56px; height:56px; border-radius:16px;
-    background:linear-gradient(135deg, var(--navy), var(--cyan));
-    display:flex; align-items:center; justify-content:center;
+  .login-brand .mark-img{
+    max-width:220px; width:100%; height:auto; display:block;
   }
-  .login-brand .mark svg{ width:28px; height:28px; }
-  .login-brand h1{ font-size:19px; color:var(--navy); }
   .login-brand .badge-admin{
     font-size:10.5px; font-weight:700; letter-spacing:.5px; text-transform:uppercase;
     background:var(--navy); color:#fff; padding:3px 10px; border-radius:20px;
@@ -107,11 +103,14 @@
   }
   .sidebar-brand{ display:flex; align-items:center; gap:12px; padding:0 6px 26px 6px; }
   .sidebar-brand .mark{
-    width:38px; height:38px; border-radius:11px; flex-shrink:0;
-    background:linear-gradient(135deg, var(--cyan), var(--cyan-light));
+    width:42px; height:42px; border-radius:11px; flex-shrink:0;
+    background:#fff;
     display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
   }
-  .sidebar-brand .mark svg{ width:20px; height:20px; }
+  .sidebar-brand .mark img{
+    width:100%; height:100%; object-fit:contain;
+  }
   .brand-name{ font-size:14.5px; font-weight:700; line-height:1.25; }
   .brand-name span{ display:block; font-size:10.5px; font-weight:500; color:#9FB3C8; font-family:'Inter',sans-serif; letter-spacing:.3px; text-transform:uppercase; }
 
@@ -390,32 +389,34 @@
 
 <!-- ===== LOGIN ===== -->
 <div class="login-screen" id="loginScreen">
- <div class="login-card">
-  <div class="login-brand">
-    <img src="logo.png" alt="EsSalud Citas" style="width:130px; height:auto; display:block; margin-bottom:6px;">
-    <span class="badge-admin">Panel Administrativo</span>
+  <div class="login-card">
+    <div class="login-brand">
+      <img class="mark-img" src="logo.png" alt="EsSalud Citas">
+      <span class="badge-admin">Panel Administrativo</span>
+    </div>
+    <p class="sub">Hospital Nacional Edgardo Rebagliati Martins</p>
+    <div class="login-error" id="loginError">Usuario o contraseña incorrectos. Verifica tus datos e intenta de nuevo.</div>
+    <div class="field">
+      <label for="userInput">Usuario</label>
+      <input type="text" id="userInput" placeholder="admin" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="passInput">Contraseña</label>
+      <input type="password" id="passInput" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-primary" onclick="doLogin()">Ingresar al panel</button>
+    <p class="login-hint">Demo: usuario <b>admin</b> · contraseña <b>admin123</b></p>
+    <div class="login-footer">Acceso exclusivo para personal administrativo autorizado.<br>El uso indebido de esta plataforma será sancionado.</div>
   </div>
-  <p class="sub">Hospital Nacional Edgardo Rebagliati Martins</p>
-  <div class="login-error" id="loginError">Usuario o contraseña incorrectos. Verifica tus datos e intenta de nuevo.</div>
-  <div class="field">
-    <label for="userInput">Usuario</label>
-    <input type="text" id="userInput" placeholder="admin" autocomplete="off">
-  </div>
-  <div class="field">
-    <label for="passInput">Contraseña</label>
-    <input type="password" id="passInput" placeholder="••••••••" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
-  </div>
-  <button class="btn-primary" onclick="doLogin()">Ingresar al panel</button>
-  <p class="login-hint">Demo: usuario <b>admin</b> · contraseña <b>admin123</b></p>
-  <div class="login-footer">Acceso exclusivo para personal administrativo autorizado.<br>El uso indebido de esta plataforma será sancionado.</div>
 </div>
 
 <!-- ===== APP ===== -->
 <div class="app">
   <aside class="sidebar" id="sidebar">
-  <div class="sidebar-brand">
-  <img src="logo.png" alt="EsSalud Citas" style="width:80px; height:auto; display:block;">
-</div>
+    <div class="sidebar-brand">
+      <div class="mark">
+        <img src="logo.png" alt="EsSalud Citas">
+      </div>
       <div class="brand-name">EsSalud Citas<span>Panel administrativo</span></div>
     </div>
 
@@ -721,8 +722,6 @@
 
 <script>
 // ================= AVISO DE ERRORES EN PANTALLA =================
-// Si algo falla en el script, se ve aquí arriba en vez de quedar
-// silencioso en la consola. Así se puede diagnosticar sin F12.
 window.addEventListener('error', function(e){
   var box = document.getElementById('jsErrorBanner');
   if(!box){
@@ -735,8 +734,6 @@ window.addEventListener('error', function(e){
 });
 
 // ================= NAV (con delegación de eventos) =================
-// Se define primero y usa delegación en el sidebar completo, para que
-// funcione aunque falle cualquier otra parte del script más abajo.
 function goView(name){
   document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.toggle('active', n.dataset.view === name); });
   document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
@@ -769,9 +766,6 @@ document.getElementById('menuToggle').addEventListener('click', openMobileMenu);
 document.getElementById('sidebarBackdrop').addEventListener('click', closeMobileMenu);
 
 // ================= LOGIN =================
-// Este panel vive en su propia URL (p. ej. citas.essalud.pe/admin) y siempre
-// exige usuario y contraseña de administrador aquí mismo; ya no hay acceso
-// automático desde el login de pacientes.
 function doLogin(){
   const user = document.getElementById('userInput').value.trim().toLowerCase();
   const pass = document.getElementById('passInput').value.trim();
@@ -789,7 +783,6 @@ document.getElementById('passInput').addEventListener('keydown', function(e){
   if(e.key==='Enter') doLogin();
 });
 function doLogout(){
-  // Vuelve al login de pacientes de EsSalud Citas (URL separada de administración)
   window.location.href = 'login.html';
 }
 
@@ -844,11 +837,6 @@ let citas = [
 ];
 
 // ================= CITAS AGENDADAS DESDE login.html =================
-// login.html guarda cada cita nueva en localStorage bajo esta clave.
-// Como ambos archivos viven en la misma carpeta/origen, aquí las leemos
-// y las agregamos a la tabla de "Gestión de citas" del panel admin.
-// citasPacientesCargadas evita duplicar una misma cita si volvemos a leer
-// el localStorage (por ejemplo, cuando login.html agenda una nueva).
 const citasPacientesCargadas = new Set();
 
 function leerPendientesStorage(){
@@ -861,8 +849,6 @@ function guardarPendientesStorage(pendientes){
   catch(e){ console.error('No se pudo guardar en localStorage:', e); }
 }
 
-// Escribe de vuelta el estado (confirmada/cancelada) en la misma clave que
-// usa login.html, para que "Mis Citas" del paciente se actualice sola.
 function sincronizarEstadoConPaciente(creadaEn, nuevoEstado){
   if(!creadaEn) return;
   const pendientes = leerPendientesStorage();
@@ -872,8 +858,6 @@ function sincronizarEstadoConPaciente(creadaEn, nuevoEstado){
   guardarPendientesStorage(pendientes);
 }
 
-// Revisa el localStorage en busca de citas nuevas que login.html haya
-// agendado y las agrega a la tabla sin necesidad de recargar la página.
 function sincronizarCitasDePacientes(){
   const pendientes = leerPendientesStorage();
   let huboNuevas = false;
@@ -884,11 +868,6 @@ function sincronizarCitasDePacientes(){
     citas.unshift(mkCita(c.paciente, c.dni, c.spec, c.doc, c.fecha, c.hora, c.estado || 'pending', c.creadaEn));
     huboNuevas = true;
   });
-  // Solo volvemos a dibujar las tablas si ya iniciaste sesión y el panel
-  // está visible; si esto se ejecuta apenas se abre el archivo (antes del
-  // login y antes de que el resto del script termine de cargar), NO se
-  // debe renderizar todavía — hacerlo antes de tiempo rompía el resto
-  // del script (por eso ningún botón funcionaba).
   const appVisible = document.querySelector('.app').classList.contains('visible');
   if(huboNuevas && appVisible && typeof renderAll === 'function'){
     renderAll();
@@ -898,12 +877,9 @@ function sincronizarCitasDePacientes(){
 
 sincronizarCitasDePacientes();
 
-// Si el paciente agenda una cita nueva mientras el panel admin está abierto
-// en otra pestaña, el navegador dispara "storage" aquí automáticamente.
 window.addEventListener('storage', function(e){
   if(e.key === 'essalud_citas_pendientes') sincronizarCitasDePacientes();
 });
-// Respaldo por si el evento "storage" no llega (p. ej. mismo documento/preview).
 setInterval(sincronizarCitasDePacientes, 4000);
 
 let notifications = [
